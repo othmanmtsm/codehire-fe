@@ -4,7 +4,7 @@
       <div class="row">
         <div class="container">
           <h1 id="title">Embaucher Un Développeur
-              <br>Pour Votre Prochain Projet</h1>
+              <br>Pour Votre Prochain Projettt</h1>
           <p id="titles">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. <br>Illo optio dicta reprehenderit inventore autem nam ut consequatur.
           </p>
