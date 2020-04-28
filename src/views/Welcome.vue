@@ -25,10 +25,10 @@
 <style scoped>
 #header{
   height: 100vh;
-  /* background-image: url('/dist/images/header.svg');
+  background-image: url('../assets/images/home_header.svg');
   background-size: 100rem;
   background-position: 20rem -24rem;
-  background-repeat: no-repeat; */
+  background-repeat: no-repeat;
   overflow: hidden;
 }
 #title{
@@ -49,9 +49,9 @@
   font-size: 35px;
   background-color: #7D3CFF;
   color: #ffffff;
-  width:13rem;
+  width:12rem;
   height: 4rem;
-  border-radius: 2rem;
+  margin-right: 10px;
   padding-top: 0;
 }
 .sbtn{
@@ -60,9 +60,8 @@
   font-size: 35px;
   color: #7D3CFF;
   border: 2px solid #7D3CFF;
-  width:13rem;
+  width:12rem;
   height: 4rem;
-  border-radius: 2rem;
   padding-top: 0;
 }
 </style>

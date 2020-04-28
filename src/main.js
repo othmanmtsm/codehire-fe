@@ -6,12 +6,17 @@ import router from '@/router';
 import axios from 'axios';
 import store from '@/store';
 
-axios.defaults.baseURL = 'https://codehireapi.herokuapp.com/api';
+require('@/store/subscriber');
 
-Vue.config.productionTip = false
+axios.defaults.baseURL = process.env.VUE_APP_API_LINK;
 
-new Vue({
-  render: h => h(App),
-  router,
-  store
-}).$mount('#app')
+Vue.config.productionTip = false;
+
+store.dispatch('auth/attempt',localStorage.getItem('token')).then(()=>{
+  new Vue({
+    render: h => h(App),
+    router,
+    store
+  }).$mount('#app')
+  
+});

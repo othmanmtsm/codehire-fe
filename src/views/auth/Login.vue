@@ -48,8 +48,8 @@
 </template>
 
 <script>
-// import lottie from 'lottie-web'
-// import * as animationData from '../../../../public/dist/images/Loginanim.json'
+import lottie from 'lottie-web'
+import * as animationData from '../../assets/images/LoginAnim.json'
 import { mapActions } from 'vuex';
 
 export default {
@@ -73,13 +73,13 @@ export default {
     }
   },
   mounted(){
-    // lottie.loadAnimation({
-    //   container: document.getElementById('svgcontainer'),
-    //   renderer: 'svg',
-    //   loop: true,
-    //   autoplay: true,
-    //   animationData: animationData.default
-    // });
+    lottie.loadAnimation({
+      container: document.getElementById('svgcontainer'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: animationData.default
+    });
   }
 }
 </script>
@@ -100,7 +100,6 @@ export default {
 .lbtn{
   background-color: #7D3CFF;
   color: #ffffff;
-  border-radius: 40px;
 }
 .card {
   box-shadow: 0 1px 1px rgba(125, 60, 255,0.4);

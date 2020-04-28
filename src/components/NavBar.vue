@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed:{
@@ -68,8 +68,15 @@ export default {
     })
   },
   methods:{
+    ...mapActions({
+      logoutAction: 'auth/signOut'
+    }),
     logout(){
-      console.log('logged out');
+      this.logoutAction().then(()=>{
+        this.$router.replace({
+          name: 'login'
+        })
+      })
       
     }
   }
