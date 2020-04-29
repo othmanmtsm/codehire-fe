@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Welcome from '@/views/Welcome';
 import Home from '@/views/Home';
 import Login from '@/views/auth/Login';
+import Register from '@/views/auth/Register';
 import store from '@/store';
 
 
@@ -30,8 +31,21 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: Login
+        component: Login,
+        beforeEnter: (to, from, next)=>{
+            if (store.getters['auth/authenticated']) {
+                next({
+                    name: 'home'
+                })   
+            }
+            next();
+        }
     },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register
+    }
 ];
 
 const router = new VueRouter({

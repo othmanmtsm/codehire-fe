@@ -1,7 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2213.501" height="1826.92" viewBox="0 0 2213.501 1826.92">
-  <g id="home_header" transform="translate(213.639 598.965)">
+<svg xmlns="http://www.w3.org/2000/svg" width="1065.904" height="877.288" viewBox="0 0 1065.904 877.288">
+  <g id="web_development" data-name="web development" transform="translate(-192.922 97.023)">
     <g id="background" transform="translate(192.922 118.305)">
-      <path id="Path_362" data-name="Path 362" d="M2362.595,853.518s523.054-469.78-99.391-675.077S1477.987-42.6,1354.074,87.061c-61.956,64.83-352.187,156.135-352.187,156.135S599.952,486.653,653.264,623.068c106.623,272.83,959.134,490.3,1244.423,501.1S2362.595,853.518,2362.595,853.518Z" transform="translate(-995.856 364.554) rotate(-25)" fill="#faeed4"/>
       <g id="details" transform="translate(0)">
         <ellipse id="Ellipse_1" data-name="Ellipse 1" cx="8.746" cy="8.412" rx="8.746" ry="8.412" transform="translate(166.718 106.269)" fill="#fff"/>
         <rect id="Rectangle_2" data-name="Rectangle 2" transform="translate(194.049 129.534)" fill="#a29a87"/>
