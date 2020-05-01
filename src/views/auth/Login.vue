@@ -5,6 +5,17 @@
         <div class="col-12 col-md-5">
           <div class="authform card">
             <div class="card-header">Login</div>
+            <v-alert
+              v-if="invalidUser"
+              border="left"
+              close-text="Close Alert"
+              color="red"
+              dark
+              dismissible
+              outlined
+            >
+              Invalid username and/or password
+            </v-alert>
             <form @submit.prevent="submit">
               <!-- Email -->
               <input
@@ -31,9 +42,16 @@
                 {{form.errors.get('password')}}
               </div>
               <!-- Submit Button -->
-              <button class="btn btn-block lbtn">
-                login
-              </button>
+                <v-btn type="submit" class="mt-4" block color="#7d3cff" dark>
+                  <v-progress-circular 
+                    v-if="form.submitting"
+                    indeterminate
+                    color="#fff"
+                    width="3"
+                    size="25"
+                  ></v-progress-circular>
+                  Connecter
+                </v-btn>
             </form>
           </div>
         </div>
@@ -67,21 +85,29 @@ export default {
     form: {
       email: "",
       password: "",
-      errors: new Errors()
+      errors: new Errors(),
+      submitting: false
     },
+    invalidUser: false
   }),
   methods: {
     ...mapActions({
       signIn: "auth/signIn",
     }),
     submit() {
+      this.form.submitting = true;
       this.signIn(this.form).then(() => {
         this.$router.replace({
           name: "home",
         });
       })
       .catch(err=>{
-        this.form.errors.record(err.response.data);
+        if (err.response.status == 422) {
+          this.form.errors.record(err.response.data);
+        }else if (err.response.status == 401) {
+          this.invalidUser = true;
+        }
+        this.form.submitting = false;
       });
     },
   },
@@ -109,11 +135,6 @@ export default {
 }
 .authform {
   margin-top: 10%;
-}
-.lbtn {
-  background-color: #7d3cff;
-  color: #ffffff;
-  margin-top: 20px;
 }
 .card {
   box-shadow: 0 1px 1px rgba(125, 60, 255, 0.4);

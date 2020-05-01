@@ -88,6 +88,7 @@ export default {
 .navbar {
   font-weight: 600;
   box-shadow: 0 2px 6px 0 rgba(125, 60, 255, 0.5);
+  padding: 0;
 }
 
 .nav-item {

@@ -3,73 +3,72 @@
     <div class="col-12 col-md-6 mx-auto mt-5 mb-5">
       <div class="card">
           <div class="card-header">S'inscrire</div>
-        <form @submit.prevent="register" @keydown="form.onKeydown($event)">
+        <v-form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <div class="row">
             <div class="col-12 col-md-6">
+              
               <!-- Name -->
-              <input
-                v-model="form.nom"
-                class="form-control"
-                type="text"
+              <v-text-field
+                label="Nom"
+                color="rgba(125, 60, 255, 0.5)"
                 name="nom"
-                placeholder="Nom"
-              />
+                v-model="form.nom"
+              ></v-text-field>
             </div>
             <div class="col-12 col-md-6">
               <!-- Name -->
-              <input
-                v-model="form.prenom"
-                class="form-control"
-                type="text"
+              <v-text-field
+                label="Prenom"
+                color="rgba(125, 60, 255, 0.5)"
                 name="prenom"
-                placeholder="Prenom"
-              />
+                v-model="form.prenom"
+              ></v-text-field>
             </div>
           </div>
 
           <!-- Email -->
-          <input
-            v-model="form.email"
-            class="form-control"
-            type="email"
+          <v-text-field
+            label="Email"
+            color="rgba(125, 60, 255, 0.5)"
             name="email"
-            placeholder="Email"
-          />
+            v-model="form.email"
+          ></v-text-field>
 
           <!-- Password -->
-          <input
-            v-model="form.password"
-            class="form-control"
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-          />
+          <v-text-field
+                label="Mot de passe"
+                color="rgba(125, 60, 255, 0.5)"
+                name="password"
+                v-model="form.password"
+                type="password"
+          ></v-text-field>
 
           <!-- Password Confirmation -->
-          <input
+          <v-text-field
+            label="Confirmer votre mot de passe"
+            color="rgba(125, 60, 255, 0.5)"
+            name="confirm"
             v-model="form.password_confirmation"
-            class="form-control"
             type="password"
-            name="password_confirmation"
-            placeholder="Mot de passe confirmation"
-          />
+          ></v-text-field>
 
           <div class="row">
             <div class="col-12 col-md-4">
-              <select
+              <v-select
                 v-model="form.pays"
-                name="pays"
-                class="form-control">
-                <option v-for="c in countries" :key="c.id" :value="c.value">{{c.value}}</option>
-              </select>
+                :items="countries"
+                label="Pays"
+                color="rgba(125, 60, 255, 0.5)"
+              ></v-select>
             </div>
             <div class="col-12 col-md-8">
-              <input
+              <v-text-field
+                label="Telephone"
+                color="rgba(125, 60, 255, 0.5)"
+                name="tel"
                 v-model="form.tel"
                 type="tel"
-                name="tel"
-                class="form-control"
-                placeholder="Telephone" />
+              ></v-text-field>
             </div>
           </div>
 
@@ -112,7 +111,7 @@
 
           <!-- Submit Button -->
           <button class="rbtn btn btn-block mt-2">register</button>
-        </form>
+        </v-form>
       </div>
     </div>
   </div>
@@ -133,8 +132,8 @@ export default {
     },
     mustVerifyEmail: false,
     countries: [
-      { id: 1, value: "Maroc" },
-      { id: 2, value: "France" }
+      'Maroc',
+      'France'
     ],
     selectedType: ""
   }),
