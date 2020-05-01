@@ -9,23 +9,29 @@
               <!-- Email -->
               <input
                 v-model="form.email"
+                :class="{'input-err': form.errors.get('email')}"
                 class="form-control"
                 type="email"
                 name="email"
                 placeholder="Email"
               />
-
+              <div class="text-danger field-err">
+                {{form.errors.get('email')}}
+              </div>
               <!-- Password -->
               <input
                 v-model="form.password"
+                :class="{'input-err': form.errors.get('password')}"
                 class="form-control"
                 type="password"
                 name="password"
                 placeholder="Password"
               />
-
+              <div class="text-danger field-err">
+                {{form.errors.get('password')}}
+              </div>
               <!-- Submit Button -->
-              <button class="btn lbtn">
+              <button class="btn btn-block lbtn">
                 login
               </button>
             </form>
@@ -42,11 +48,26 @@ import lottie from "lottie-web";
 import * as animationData from "../../assets/images/LoginAnim.json";
 import { mapActions } from "vuex";
 
+class Errors{
+  constructor(){
+    this.errors = {};
+  }
+  get(field){
+    if (this.errors[field]) {
+      return this.errors[field][0];
+    }
+  }
+  record(data){
+    this.errors = data.errors;
+  }
+}
+
 export default {
   data: () => ({
     form: {
       email: "",
       password: "",
+      errors: new Errors()
     },
   }),
   methods: {
@@ -58,6 +79,9 @@ export default {
         this.$router.replace({
           name: "home",
         });
+      })
+      .catch(err=>{
+        this.form.errors.record(err.response.data);
       });
     },
   },
@@ -74,6 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .lgn {
   height: 95vh;
   background-image: url("/dist/images/login-bg.svg");
@@ -88,6 +113,7 @@ export default {
 .lbtn {
   background-color: #7d3cff;
   color: #ffffff;
+  margin-top: 20px;
 }
 .card {
   box-shadow: 0 1px 1px rgba(125, 60, 255, 0.4);
@@ -102,11 +128,16 @@ export default {
     color: #42366d;
   }
   .form-control {
-    margin-bottom: 20px;
     text-align: center !important;
     border: none !important;
     border-bottom: 1px solid rgba(125, 60, 255, 0.5) !important;
     margin-top: 20px;
   }
+}
+.field-err{
+  font-weight: lighter;
+}
+.input-err{
+  background: #ff000021;
 }
 </style>

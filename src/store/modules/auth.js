@@ -29,7 +29,7 @@ export default {
 
     actions: {
         async signIn({dispatch},credentials){
-            let response = await axios.post('auth/signin',credentials);
+            let response = await axios.post('auth/signin',credentials,{headers:{Accept: 'application/json'}});
             return dispatch('attempt',response.data.token);
         },
 
