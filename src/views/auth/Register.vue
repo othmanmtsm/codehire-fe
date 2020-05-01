@@ -48,7 +48,7 @@
             label="Confirmer votre mot de passe"
             color="rgba(125, 60, 255, 0.5)"
             name="confirm"
-            v-model="form.password_confirmation"
+            v-model="password_confirmation"
             type="password"
           ></v-text-field>
 
@@ -78,21 +78,21 @@
             <div class="col-12 col-md-6">
               <button
                 type="button"
-                v-bind:class="{selectedT: (selectedType=='freelancer')}"
-                @click="selectedType='freelancer'"
+                v-bind:class="{selectedT: (form.role=='1')}"
+                @click="form.role='1'"
                 class="btn btn-block chbtn"
               >Travailler comme freelancer</button>
             </div>
             <div class="col-12 col-md-6">
               <button
                 type="button"
-                v-bind:class="{selectedT: (selectedType=='client')}"
-                @click="selectedType='client'"
+                v-bind:class="{selectedT: (form.role=='2')}"
+                @click="form.role='2'"
                 class="btn btn-block chbtn"
               >Poster des projets</button>
             </div>
           </div>
-          <div class="row" v-if="selectedType=='freelancer'">
+          <div class="row" v-if="form.role=='1'">
             <input
               v-model="form.username"
               type="text"
@@ -110,7 +110,7 @@
           </div>
 
           <!-- Submit Button -->
-          <button class="rbtn btn btn-block mt-2">register</button>
+          <button type="submit" class="rbtn btn btn-block mt-2">register</button>
         </v-form>
       </div>
     </div>
@@ -118,6 +118,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data: () => ({
     form: {
@@ -126,21 +128,31 @@ export default {
       username: "",
       email: "",
       password: "",
-      password_confirmation: "",
       pays: "",
-      tel: ""
+      tel: "",
+      role: ""
     },
     mustVerifyEmail: false,
     countries: [
       'Maroc',
       'France'
     ],
-    selectedType: ""
+    password_confirmation: "",
   }),
 
   methods: {
+    ...mapActions({
+      signUp: "auth/signUp",
+    }),
     async register() {
-        //register logic
+        this.signUp(this.$data.form)
+        .then(()=>{
+          if (this.$data.form.role == 1) {
+            console.log('complete profile');
+            
+          }
+        })
+        .catch(err=>console.dir(err.response.data.message))
     }
   }
 };

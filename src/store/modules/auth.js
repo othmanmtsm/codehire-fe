@@ -50,6 +50,12 @@ export default {
                 commit('SET_USER', null);
             }
         },
+
+        async signUp({dispatch},data){
+            let response = await axios.post('auth/signup',data,{headers:{Accept: 'application/json'}});
+            return dispatch('signIn',response.data);
+        },
+
         signOut({commit}){
             return axios.post('auth/signout').then(()=>{
                 commit('SET_TOKEN', null);

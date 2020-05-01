@@ -11,7 +11,6 @@
               close-text="Close Alert"
               color="red"
               dark
-              dismissible
               outlined
             >
               Invalid username and/or password
@@ -20,31 +19,31 @@
               <!-- Email -->
               <input
                 v-model="form.email"
-                :class="{'input-err': form.errors.get('email')}"
+                :class="{'input-err': errors.get('email')}"
                 class="form-control"
                 type="email"
                 name="email"
                 placeholder="Email"
               />
               <div class="text-danger field-err">
-                {{form.errors.get('email')}}
+                {{errors.get('email')}}
               </div>
               <!-- Password -->
               <input
                 v-model="form.password"
-                :class="{'input-err': form.errors.get('password')}"
+                :class="{'input-err': errors.get('password')}"
                 class="form-control"
                 type="password"
                 name="password"
                 placeholder="Password"
               />
               <div class="text-danger field-err">
-                {{form.errors.get('password')}}
+                {{errors.get('password')}}
               </div>
               <!-- Submit Button -->
                 <v-btn type="submit" class="mt-4" block color="#7d3cff" dark>
                   <v-progress-circular 
-                    v-if="form.submitting"
+                    v-if="submitting"
                     indeterminate
                     color="#fff"
                     width="3"
@@ -84,10 +83,10 @@ export default {
   data: () => ({
     form: {
       email: "",
-      password: "",
-      errors: new Errors(),
-      submitting: false
+      password: ""
     },
+    errors: new Errors(),
+    submitting: false,
     invalidUser: false
   }),
   methods: {
@@ -95,7 +94,7 @@ export default {
       signIn: "auth/signIn",
     }),
     submit() {
-      this.form.submitting = true;
+      this.submitting = true;
       this.signIn(this.form).then(() => {
         this.$router.replace({
           name: "home",
@@ -103,11 +102,11 @@ export default {
       })
       .catch(err=>{
         if (err.response.status == 422) {
-          this.form.errors.record(err.response.data);
+          this.errors.record(err.response.data);
         }else if (err.response.status == 401) {
           this.invalidUser = true;
         }
-        this.form.submitting = false;
+        this.submitting = false;
       });
     },
   },
