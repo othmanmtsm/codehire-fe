@@ -4,6 +4,7 @@ import Welcome from '@/views/Welcome';
 import Home from '@/views/Home';
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
+import ProfileSetup from '@/views/freelancer/profile/Setup'
 import store from '@/store';
 
 
@@ -45,6 +46,11 @@ const routes = [
         path: '/register',
         name: 'register',
         component: Register
+    },
+    {
+        path: '/profile/setup/:role',
+        name: 'profile.setup',
+        component: ProfileSetup
     }
 ];
 

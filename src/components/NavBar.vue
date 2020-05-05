@@ -22,7 +22,7 @@
             <a class="nav-link dropdown-toggle text-dark"
                href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
             >
-              <!-- <img :src="user.photo_url" class="rounded-circle profile-photo mr-1"> -->
+              <img :src="avatar+'/'+user.avatar" class="rounded-circle profile-photo mr-1">
               {{ user.name }}
             </a>
             <div class="dropdown-menu">
@@ -57,6 +57,11 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+  data() {
+    return {
+      avatar: `${process.env.VUE_APP_API_LINK}storage`
+    }
+  },
   computed:{
     ...mapGetters({
       authenticated: 'auth/authenticated',

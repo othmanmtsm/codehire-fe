@@ -8,10 +8,12 @@ import store from '@/store';
 import vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
+import './assets/sass/style.scss'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 require('@/store/subscriber');
 
-axios.defaults.baseURL = process.env.VUE_APP_API_LINK;
+axios.defaults.baseURL = `${process.env.VUE_APP_API_LINK}api`;
 
 Vue.config.productionTip = false;
 

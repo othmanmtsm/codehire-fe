@@ -135,25 +135,6 @@ export default {
 .authform {
   margin-top: 10%;
 }
-.card {
-  box-shadow: 0 1px 1px rgba(125, 60, 255, 0.4);
-  text-align: center !important;
-  padding: 3rem;
-  border-radius: 20px;
-  .card-header {
-    background-color: #ffffff !important;
-    font-family: "PT Sans", sans-serif;
-    font-weight: 900;
-    font-size: 30px;
-    color: #42366d;
-  }
-  .form-control {
-    text-align: center !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(125, 60, 255, 0.5) !important;
-    margin-top: 20px;
-  }
-}
 .field-err{
   font-weight: lighter;
 }

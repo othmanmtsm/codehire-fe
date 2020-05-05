@@ -52,16 +52,13 @@
             type="password"
           ></v-text-field>
 
-          <div class="row">
-            <div class="col-12 col-md-4">
-              <v-select
-                v-model="form.pays"
-                :items="countries"
-                label="Pays"
+          <v-text-field
+                label="Adresse"
                 color="rgba(125, 60, 255, 0.5)"
-              ></v-select>
-            </div>
-            <div class="col-12 col-md-8">
+                name="adresse"
+                v-model="form.addresse"
+                type="text"
+          ></v-text-field>
               <v-text-field
                 label="Telephone"
                 color="rgba(125, 60, 255, 0.5)"
@@ -69,8 +66,6 @@
                 v-model="form.tel"
                 type="tel"
               ></v-text-field>
-            </div>
-          </div>
 
           <p class="theader">Je veux</p>
           <hr />
@@ -92,14 +87,6 @@
               >Poster des projets</button>
             </div>
           </div>
-          <div class="row" v-if="form.role=='1'">
-            <input
-              v-model="form.username"
-              type="text"
-              name="username"
-              class="form-control"
-              placeholder="Username" />
-          </div>
 
           <div class="row mt-4">
             <label class="control control-checkbox">
@@ -110,7 +97,16 @@
           </div>
 
           <!-- Submit Button -->
-          <button type="submit" class="rbtn btn btn-block mt-2">register</button>
+          <button type="submit" class="rbtn btn btn-block mt-2">
+            <v-progress-circular 
+                v-if="submitting"
+                indeterminate
+                color="#fff"
+                width="3"
+                size="25"
+            ></v-progress-circular>
+            register
+          </button>
         </v-form>
       </div>
     </div>
@@ -125,19 +121,15 @@ export default {
     form: {
       nom: "",
       prenom: "",
-      username: "",
       email: "",
       password: "",
-      pays: "",
+      addresse: "",
       tel: "",
       role: ""
     },
     mustVerifyEmail: false,
-    countries: [
-      'Maroc',
-      'France'
-    ],
     password_confirmation: "",
+    submitting: false
   }),
 
   methods: {
@@ -145,40 +137,23 @@ export default {
       signUp: "auth/signUp",
     }),
     async register() {
-        this.signUp(this.$data.form)
-        .then(()=>{
-          if (this.$data.form.role == 1) {
-            console.log('complete profile');
-            
-          }
-        })
-        .catch(err=>console.dir(err.response.data.message))
+      this.submitting = true;
+      this.signUp(this.$data.form)
+      .then(()=>{
+          this.$router.push({
+            name: 'profile.setup',
+            params: {
+              role: this.$data.form.role
+            }
+          })
+      })
+      .catch(err=>console.dir(err.response.data.message))
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.card {
-  box-shadow: 0 1px 1px rgba(125, 60, 255, 0.4);
-  text-align: center !important;
-  padding: 3rem;
-  border-radius: 20px;
-  .card-header {
-    background-color: #ffffff !important;
-    font-family: "PT Sans", sans-serif;
-    font-weight: 900;
-    font-size: 30px;
-    color: #42366d;
-  }
-  .form-control {
-    margin-bottom: 20px;
-    text-align: center !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(125, 60, 255, 0.5) !important;
-    margin-top: 20px;
-  }
-}
 .chbtn {
   background-color: #7d3cff;
   color: #ffffff;
