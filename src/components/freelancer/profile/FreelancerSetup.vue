@@ -3,13 +3,14 @@
     <div class="col-12 col-md-6 mx-auto mt-5 mb-5">
         <div class="card">
             <v-form @submit.prevent="submitF" @keydown="form.onKeydown($event)">
-
+                <div class="card-header">Configurer votre profil</div>
+                <label class="float-left mt-3">Avatar : </label>
                 <input
                     type="file"
                     @change="uploadAvatar"
+                    class="form-control-file"
                     required
                 />
-
                 <div id="preview">
                     <img width="200" v-if="imageUrl" :src="imageUrl" />
                 </div>
@@ -154,6 +155,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#preview{
+    img{
+        border-radius: 6px;
+        border: 1px solid #7d3cff;
+    }
+}
 .cat-container{
     padding: 0;
     .cat{
