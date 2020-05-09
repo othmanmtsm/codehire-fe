@@ -22,6 +22,20 @@
                     v-model="form.username"
                 ></v-text-field>
 
+                <v-text-field
+                    label="Title"
+                    color="rgba(125, 60, 255, 0.5)"
+                    name="title"
+                    v-model="form.title"
+                ></v-text-field>
+
+                <v-text-field
+                    label="Hourly Rate"
+                    value="28.00"
+                    suffix="DH/hr"
+                    v-model="form.hourlyrate"
+                ></v-text-field>
+
                 <v-select
                 v-model="form.skills"
                     :items="skills_list"
@@ -106,6 +120,8 @@ export default {
             form:{
                 avatar: null,
                 username: '',
+                title: '',
+                hourlyrate: '',
                 skills: [],
                 categories: []
             },
@@ -124,7 +140,9 @@ export default {
             this.submitting = true;
             let bodyFormData = new FormData();
             bodyFormData.append('avatar',this.form.avatar);
+            bodyFormData.append('hourlyrate',this.form.hourlyrate);
             bodyFormData.append('username',this.form.username);
+            bodyFormData.append('title',this.form.title);
 
             if(this.form.skills.length > 0)
                 bodyFormData.append('skills',this.form.skills);
