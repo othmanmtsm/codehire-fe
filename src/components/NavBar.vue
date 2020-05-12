@@ -1,56 +1,52 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
-      <router-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
-        <img src="@/assets/images/logo.png" alt="logo" width="40">
-      </router-link>
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
-        <span class="navbar-toggler-icon" />
-      </button>
-
-      <div id="navbarToggler" class="collapse navbar-collapse">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            
-          </li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto">
-          <!-- Authenticated -->
-          <li v-if="authenticated" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-dark"
-               href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-            >
-              <img :src="avatar+'/'+user.avatar" class="rounded-circle profile-photo mr-1">
-              {{ user.name }}
-            </a>
-            <div class="dropdown-menu">
-              <a href="#" class="dropdown-item pl-3" @click.prevent="logout">
-                logout
-              </a>
-            </div>
-          </li>
-          <!-- Guest -->
-          <template v-else>
-            <li class="nav-item">
-              <router-link :to="{ name: 'login' }" class="nav-link" active-class="active">
-                Se connecter
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
-                S'inscrire
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <button class="btn btn-p">Publier un projet</button>
-            </li>
-          </template>
-        </ul>
-      </div>
+    <div>
+        <v-toolbar short app>
+            <v-app-bar-nav-icon v-if="authenticated" @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-toolbar-title>
+                <img src="@/assets/images/logo.png" alt="logo" width="40">
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <template v-if="authenticated">
+                <v-text-field
+                    solo
+                    hide-details
+                    append-icon="search"
+                    single-line
+                    label="Search..."
+                ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-avatar size="40">
+                    <img :src="avatar+'/'+user.avatar">
+                </v-avatar>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on">
+                            <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item-group>
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title @click.prevent="logout">log out</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list-item-group>
+                    </v-list>
+                </v-menu>
+            </template>
+            <template v-else>
+                <v-btn to="login" text>login</v-btn>
+                <v-btn to="register" text>S'inscrire</v-btn>
+                <button class="btn btn-p">Publier un projet</button>
+            </template>
+        </v-toolbar>
+        <v-navigation-drawer v-if="authenticated" v-model="drawer" app>
+            <v-btn @click="drawer = !drawer" icon>
+                <v-icon>clear</v-icon>
+            </v-btn>
+        </v-navigation-drawer>
     </div>
-  </nav>
 </template>
 
 <script>
@@ -59,7 +55,8 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   data() {
     return {
-      avatar: `${process.env.VUE_APP_API_LINK}storage`
+      avatar: `${process.env.VUE_APP_API_LINK}storage`,
+      drawer: false
     }
   },
   computed:{
@@ -85,34 +82,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.profile-photo {
-  width: 2rem;
-  height: 2rem;
-  margin: -.375rem 0;
-}
-.navbar {
-  font-weight: 600;
-  box-shadow: 0 2px 6px 0 rgba(125, 60, 255, 0.5);
-  padding: 0;
-}
-
-.nav-item {
-  .dropdown-menu {
-    border: none;
-    margin-top: .5rem;
-    border-top: 1px solid #f2f2f2 !important;
-    box-shadow: 0 4px 8px 0 rgba(125, 60, 255,0.12), 0 2px 4px 0 rgba(125, 60, 255,0.08);
-  }
-  .btn-p{
+.btn-p{
     background-color: #ec615b;
     color: #ffffff;
     margin-left: 20px;
   }
-}
 
-.nav-link {
-  .svg-inline--fa {
-    font-size: 1.4rem;
-  }
-}
 </style>

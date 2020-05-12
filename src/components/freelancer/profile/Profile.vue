@@ -7,12 +7,15 @@
           <div class="row">
             <div class="col-3 text-center">
               <div id="profile-img">
-                <img
-                  width="200"
-                  :src="avatar + '/' + freelancer.avatar"
-                  alt=""
-                  srcset=""
-                />
+                <v-avatar
+                  size="200"
+                >
+                  <img
+                    :src="avatar + '/' + freelancer.avatar"
+                    alt=""
+                    srcset=""
+                  />
+                </v-avatar>
               </div>
               <div id="username">
                 <p>{{ freelancer.username }}</p>
@@ -97,13 +100,33 @@
               <div class="skills">
                 <p>Skills</p>
                 <v-divider></v-divider>
-                <v-chip
-                    class="ma-2"
-                    v-for="skill in freelancer.skills"
-                    :key="skill.id"
+                <v-chip-group column>
+                    <v-chip
+                      class="ma-2"
+                      v-for="skill in freelancer.skills"
+                      :key="skill.id"
+                  >
+                      {{skill.skill_name}}
+                  </v-chip>
+                </v-chip-group>
+                
+              </div>
+              <div class="certifications mt-4">
+                <p>Certifications</p>
+                <v-divider></v-divider>
+                <v-card
+                  v-for="cert in freelancer.certifications"
+                  :key="cert.id"
+                  outlined
                 >
-                    {{skill.skill_name}}
-                </v-chip>
+                  <v-card-title>{{cert.nom}}</v-card-title>
+                  <v-card-subtitle>
+                    <v-icon size="15">date_range</v-icon>
+                    {{cert.date}}
+                    <v-icon size="15">card_travel</v-icon> 
+                    {{cert.provider}}
+                  </v-card-subtitle>
+                </v-card>
               </div>
           </div>
       </div>
@@ -211,6 +234,16 @@ export default {
             font-size: large;
             margin-bottom: 5px;
         }
+    }
+    .certifications{
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 10px;
+      p{
+          font-weight: 500;
+          font-size: large;
+          margin-bottom: 5px;
+      }
     }
 }
 </style>
