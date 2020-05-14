@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-toolbar short app>
+        <v-app-bar short hide-on-scroll color="white">
             <v-app-bar-nav-icon v-if="authenticated" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title>
                 <img src="@/assets/images/logo.png" alt="logo" width="40">
@@ -40,7 +40,7 @@
                 <v-btn to="register" text>S'inscrire</v-btn>
                 <button class="btn btn-p">Publier un projet</button>
             </template>
-        </v-toolbar>
+        </v-app-bar>
         <v-navigation-drawer v-if="authenticated" v-model="drawer" app>
             <v-btn @click="drawer = !drawer" icon>
                 <v-icon>clear</v-icon>

@@ -4,9 +4,10 @@ import Welcome from '@/views/Welcome';
 import Home from '@/views/Home';
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
-import ProfileSetup from '@/views/freelancer/profile/Setup'
-import MyProfile from '@/views/freelancer/profile/me'
+import ProfileSetup from '@/views/profile/Setup'
+import MyProfile from '@/views/freelancer/me'
 import store from '@/store';
+import newProject from '@/views/project/newProject';
 
 
 Vue.use(VueRouter);
@@ -57,6 +58,11 @@ const routes = [
         path: '/me',
         name: 'profile.me',
         component: MyProfile
+    },
+    {
+        path: '/project/create',
+        name: 'project.new',
+        component: newProject
     }
 ];
 

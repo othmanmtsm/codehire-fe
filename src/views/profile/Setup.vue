@@ -4,17 +4,19 @@
           <FreelancerSetup></FreelancerSetup>
       </div>
       <div v-else>
-          client
+          <ClientSetup></ClientSetup>
       </div>
   </div>
 </template>
 
 <script>
 import FreelancerSetup from '@/components/freelancer/profile/FreelancerSetup'
+import ClientSetup from '@/components/client/profile/ClientSetup'
 
 export default {
     components:{
         FreelancerSetup,
+        ClientSetup
     },
     data() {
         return {
