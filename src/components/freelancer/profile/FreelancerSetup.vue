@@ -179,28 +179,5 @@ export default {
         border: 1px solid #7d3cff;
     }
 }
-.cat-container{
-    padding: 0;
-    .cat{
-        height: 120px;
-        background: #7d3cff;
-        margin: 10px;
-        padding-top: 5%;
-        border-radius: 5px;
-        cursor: pointer;
-        .cat-text{
-            font-size: 15px;
-            color: #ffffff;
-        }
-        border: 2px solid #ffffff;
-    }
-    .selected-cat{
-        background:#ffffff !important;
-        .cat-text{
-            color: #7d3cff !important;
-        }
-        border: 2px solid #7d3cff;
-    }
-}
 
 </style>

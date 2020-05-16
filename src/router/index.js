@@ -8,6 +8,7 @@ import ProfileSetup from '@/views/profile/Setup'
 import MyProfile from '@/views/freelancer/me'
 import store from '@/store';
 import newProject from '@/views/project/newProject';
+import listProject from '@/views/project/projectList';
 
 
 Vue.use(VueRouter);
@@ -58,6 +59,11 @@ const routes = [
         path: '/me',
         name: 'profile.me',
         component: MyProfile
+    },
+    {
+        path: '/project',
+        name: 'project.list',
+        component: listProject
     },
     {
         path: '/project/create',
