@@ -1,6 +1,5 @@
 <template>
   <div class="user-pg">
-    <div id="user-bg"></div>
     <div class="container">
       <div class="row">
         <div class="col-12" id="user-header">
@@ -35,30 +34,26 @@
               <div class="freelancer-desc">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
                 facilisis quam et nisl feugiat, non cursus metus sodales.
-                Suspendisse at tortor augue. Vestibulum condimentum mi et mauris
-                interdum dignissim. Curabitur tristique feugiat pretium.
-                Curabitur volutpat laoreet leo vel consequat. Sed aliquam mauris
-                at eros tincidunt, sodales rhoncus orci accumsan. Duis egestas
-                dui ut vestibulum malesuada. Etiam viverra viverra justo ac
-                eleifend.
+                Suspendisse at tortor augue.
               </div>
             </div>
             <div class="col-3">
               <div class="row">
                 <div class="col-6 stats prjts-crs">
-                  <p>2</p>
+                  <p>{{ freelancer.projets_en_cours }}</p>
                   Projets en<br />
                   cours
                 </div>
-                <div class="col-6 stats">
-                  b
+                <div class="col-6 stats revs">
+                  <p>{{ freelancer.nb_reviews }}</p>
+                  Reviews
                 </div>
               </div>
               <div class="row">
                 <div class="col-6 stats">
                   c
                 </div>
-                <div class="col-6 stats">
+                <div class="col-6 stats prjts-crs">
                   d
                 </div>
               </div>
@@ -72,7 +67,32 @@
                     <p class="ttl">Clients Reviews</p>
                 <v-divider></v-divider>
                 <div>
-                    <p>No reviews</p>
+                    <v-card
+                      v-for="rev in freelancer.reviews"
+                      :key="rev.id"
+                      flat
+                    >
+                    <v-card-title>
+                      <v-avatar>
+                        <img :src="`${avatar}/${rev.avatar}`">
+                      </v-avatar>
+                      {{ rev.client_prenom }}
+                      {{ rev.client_nom }}
+                    </v-card-title>
+                    <v-card-text>
+                      {{ rev.review }}
+
+                    </v-card-text>
+                    </v-card>
+                </div>
+                <div class="row" v-if="$props.isNotMe">
+                  <v-text-field
+                    placeholder="Add review"
+                    class="col-10"
+                    @keypress.enter="addReview"
+                    v-model="review.text"
+                  >
+                  </v-text-field>
                 </div>
               </div>
               <div class="experience mt-5">
@@ -142,17 +162,32 @@ export default {
     return {
       freelancer: Object,
       avatar: `${process.env.VUE_APP_API_LINK}storage`,
+      review: {
+        text: ''
+      }
     };
   },
   props: {
     freelancerID: {
       type: Number,
     },
+    isNotMe: {
+      type: Boolean,
+      default: false
+    }
   },
   created() {
+    console.log(this.$props.freelancerID);
+    
     axios.get(`freelancer/${this.$props.freelancerID}/profile`).then((res) => {
       this.freelancer = res.data;
     });
+  },
+  methods: {
+    addReview() {
+      axios.post(`freelancer/${this.$props.freelancerID}/profile/review`, this.review)
+            .then(res=>console.log(res.data))
+    }
   },
 };
 </script>
@@ -161,12 +196,8 @@ export default {
 .user-pg {
   background-color: #f7f8fb;
 }
-#user-bg {
-  background-image: url(https://images.pexels.com/photos/965345/pexels-photo-965345.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-  height: 40vh;
-}
+
 #user-header {
-  margin-top: -130px;
   background-color: #fff;
   border-radius: 4px;
   #username {
@@ -202,6 +233,11 @@ export default {
   background-color: #f7f8fb;
   p {
     color: #ec615b;
+  }
+}
+.revs{
+  p{
+    color: blueviolet;
   }
 }
 .lft-container{

@@ -53,6 +53,7 @@ export default {
 
         async signUp({dispatch},data){
             let response = await axios.post('auth/signup',data,{headers:{Accept: 'application/json'}});
+            console.log(response.data);
             return dispatch('signIn',response.data);
         },
 

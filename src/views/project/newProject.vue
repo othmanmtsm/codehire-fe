@@ -194,8 +194,6 @@ export default {
         payment: ''
       },
       editorOption: {
-        debug: "info",
-        placeholder: "Test",
         theme: "snow",
       },
       content: "",
@@ -204,7 +202,7 @@ export default {
   },
   watch: {
     content() {
-      this.form.description = this.$refs.myQuillEditor.quill.getContents();
+      this.form.description = JSON.stringify(this.$refs.myQuillEditor.quill.getContents());
     },
   },
   methods: {
@@ -217,6 +215,7 @@ export default {
       this.form.category = cat;
     },
     submitF() {
+        console.log(this.form);
         axios.post('project',this.form)
             .then(res=>console.log(res))
             .catch(err=>console.log(err))
@@ -232,6 +231,9 @@ export default {
 </script>
 
 <style lang="scss">
+.ql-container.ql-snow{
+    border: none;
+}
 .ql-editor {
   font-size: 20px;
   min-height: 25vh;

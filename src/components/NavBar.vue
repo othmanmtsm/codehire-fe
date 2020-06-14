@@ -31,6 +31,11 @@
                                     <v-list-item-title @click.prevent="logout">log out</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title @click.prevent="settings">Parameters</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
                         </v-list-item-group>
                     </v-list>
                 </v-menu>
@@ -45,6 +50,23 @@
             <v-btn @click="drawer = !drawer" icon>
                 <v-icon>clear</v-icon>
             </v-btn>
+            <v-list>
+              <v-list-group
+                prepend-icon="account_circle"
+              >
+                <template v-slot:activator>
+                  <v-list-item-title>Parametres</v-list-item-title>
+                </template>
+                <v-list-item
+                  link
+                  :to="{name: 'settings.projects'}"
+                >
+                    <v-list-item-content>
+                        <v-list-item-title>Projets</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+              </v-list-group>
+            </v-list>
         </v-navigation-drawer>
     </div>
 </template>
@@ -75,7 +97,11 @@ export default {
           name: 'login'
         })
       })
-      
+    },
+    settings(){
+      this.$router.replace({
+        name: 'settings'
+      })
     }
   }
 }

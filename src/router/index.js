@@ -5,10 +5,18 @@ import Home from '@/views/Home';
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
 import ProfileSetup from '@/views/profile/Setup'
-import MyProfile from '@/views/freelancer/me'
+import MyProfile from '@/views/freelancer/me';
 import store from '@/store';
 import newProject from '@/views/project/newProject';
 import listProject from '@/views/project/projectList';
+import singleProject from '@/views/project/projectSingle';
+import projectsSettings from '@/views/project/projectSettings';
+import editProject from '@/views/project/editProject';
+import Messages from '@/views/Messages';
+import Profile from '@/views/freelancer/profile';
+
+
+
 
 
 Vue.use(VueRouter);
@@ -61,7 +69,7 @@ const routes = [
         component: MyProfile
     },
     {
-        path: '/project',
+        path: '/projects',
         name: 'project.list',
         component: listProject
     },
@@ -69,6 +77,31 @@ const routes = [
         path: '/project/create',
         name: 'project.new',
         component: newProject
+    },
+    {
+        path: '/project/:id',
+        name: 'project.single',
+        component: singleProject
+    },
+    {
+        path: '/project/:id/edit',
+        name: 'project.edit',
+        component: editProject
+    },
+    {
+        path: '/settings/projects',
+        name: 'settings.projects',
+        component: projectsSettings
+    },
+    {
+        path: '/messages',
+        name: 'messages',
+        component: Messages
+    },
+    {
+        path: '/freelancer/:id',
+        name: 'freelancer.profile',
+        component: Profile
     }
 ];
 
