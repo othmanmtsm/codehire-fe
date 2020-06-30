@@ -32,9 +32,7 @@
                 {{ freelancer.hourlyrate }} DH / hr
               </div>
               <div class="freelancer-desc">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-                facilisis quam et nisl feugiat, non cursus metus sodales.
-                Suspendisse at tortor augue.
+                {{ freelancer.bio }}
               </div>
             </div>
             <div class="col-3">
@@ -47,14 +45,6 @@
                 <div class="col-6 stats revs">
                   <p>{{ freelancer.nb_reviews }}</p>
                   Reviews
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6 stats">
-                  c
-                </div>
-                <div class="col-6 stats prjts-crs">
-                  d
                 </div>
               </div>
             </div>

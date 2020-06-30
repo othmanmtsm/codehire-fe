@@ -34,11 +34,9 @@
                 <div class="chat_ib">
                   <h5>
                     {{ `${contact.prenom} ${contact.nom}` }}
-                    <span class="chat_date">Dec 25</span>
                   </h5>
                   <p>
-                    Test, which is a new approach to have all solutions
-                    astrology under one roof.
+                    online
                   </p>
                 </div>
               </div>
@@ -47,32 +45,33 @@
           </div>
         </div>
         <div class="mesgs">
-          <div class="msg_history">
+          <div ref="msgs" class="msg_history">
             <!-- MESSAGES -->
             <div v-if="selectedContact">
-
-            
-
                 <div
                     v-for="message in messages"
                     :key="message.id" 
                     :class="(message.to == selectedContact.id)?'outgoing_msg':'received_msg'"
                 >
                     <div :class="(message.to == selectedContact.id)?'sent_msg':'received_withd_msg'">
-                    <p>
+                    <p v-if="message.type == 'text'">
                         {{ message.text }}
                     </p>
-                    <span class="time_date">11:01 AM | June 9</span>
+                    <v-chip
+                      v-if="message.type=='file'"
+                      link
+                      :href="`${storage}/${message.text}`"
+                      :color="(message.to == selectedContact.id)?'primary':''"
+                    >
+                      attachment
+                    </v-chip>
+                    <span class="time_date mb-3">{{ message.created_at }}</span>
                     </div>
                 </div>
-
-            
             </div>
-
           </div>
           <div class="type_msg">
             <div class="input_msg_write">
-              <!-- <input type="text" class="write_msg" placeholder="Type a message" /> -->
               <v-text-field @keydown.enter="send" placeholder="Message..." v-model="message" class="write_msg"></v-text-field>
               <button class="msg_send_btn" type="button">
                 <v-icon
@@ -80,11 +79,39 @@
                     small
                 >send</v-icon>
               </button>
+              <v-chip
+                link
+                class="attachment_btn"
+                color="transparent"
+                data-toggle="modal"
+                data-target="#attachmentModal"
+              >
+                <v-icon>attach_file</v-icon>
+              </v-chip>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="modal fade" id="attachmentModal" ref="attachmentModal" tabindex="-1" role="dialog" aria-labelledby="attachmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+              <v-file-input
+                @change="uploadAtt"
+                hide-input
+                :clearable="false"
+              ></v-file-input>
+              <v-btn @click="sendAtt" block>upload</v-btn>
+              <p color="green" v-if="uploaded">uploaded !!</p>
+        </div>
+        <div class="modal-footer">
+          <v-btn depressed data-dismiss="modal">Close</v-btn>
+          <v-btn depressed color="primary" data-dismiss="modal" @click="send">Send</v-btn>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 
@@ -92,6 +119,7 @@
 import axios from 'axios';
 // import { Echo, Pusher } from 'laravel-echo';
 import { mapGetters } from 'vuex';
+import io from 'socket.io-client';
 
 export default {
     data() {
@@ -101,31 +129,26 @@ export default {
             contacts: [],
             storage: `${process.env.VUE_APP_API_LINK}storage`,
             message: '',
-            selectedIndex: 0
+            attachment: null,
+            selectedIndex: 0,
+            socket: {},
+            uploaded: false
         }
     },
+    created () {
+      this.socket = io();
+      axios.get('/contacts')
+              .then(res => {
+                  this.contacts = res.data;
+              });
+    },
     mounted () {
-      // window.Pusher = Pusher;
-      // let echo = new Echo({
-      //   broadcaster: 'pusher',
-      //   cluster: 'eu',
-      //   key: 'aa932cc6d5e8b13d3634',
-      //   wsHost: 'http://api.test/'
-      // });
-
-      //   echo.private(`messages.${this.user.id}"`)
-      //       .listen('NewMessage', (e)=>{
-      //           if (this.selectedContact && e.message.from == this.selectedContact.id) {
-      //               this.messages.push(e.message);
-      //           }else{
-      //               alert(e.message.text)
-      //           }
-      //       })
-
-        axios.get('/contacts')
-                .then(res => {
-                    this.contacts = res.data;
-                });
+      this.socket.emit('join',this.user.id);
+      this.socket.on('message', data=>{
+        if (data.to == this.user.id) {
+          this.messages.push(data);
+        }
+      })
     },
     computed: {
         ...mapGetters({
@@ -134,28 +157,51 @@ export default {
     },
     methods: {
         send() {
+
             if (this.message == '' || !this.selectedContact) {
                 return;
             }
             
             axios.post('/conversation/send',{
                 contact_id: this.selectedContact.id,
-                text: this.message
+                text: this.message,
+                type: this.attachment?'file':'text'
             }).then(res=>{
+                this.socket.emit('message', {id: this.selectedContact.id, message: this.message, type: res.data.type, created_at: res.data.created_at});
+                this.message = '';
                 this.messages.push(res.data);
+                this.attachment = null;
+                this.$refs.msgs.scrollTop = this.$refs.msgs.scrollHeight; 
+                this.uploaded = false;
             })
 
-            this.message = '';
+            
         },
         selectContact(i, c){
-
             this.selectedIndex = i;
-
             axios.get(`/conversation/${c.id}`)
                     .then(res=>{
                         this.messages = res.data;
                         this.selectedContact = c;
+                        this.$refs.msgs.scrollTop = this.$refs.msgs.scrollHeight; 
                     })
+                    .catch(err=>{
+                      console.log(err.response.data);
+                    })
+        },
+        uploadAtt (file) {
+          // this.$refs.attachmentModal.modal('show');
+          console.log(file);
+          this.attachment = file;
+        },
+        sendAtt () {
+          let bodyFormData = new FormData();
+          bodyFormData.append('file',this.attachment);
+          axios.post('conversation/sendAttachment', bodyFormData)
+                .then(res=>{
+                  this.message = res.data;
+                  this.uploaded = true;
+                })
         }
     },
 };
@@ -311,7 +357,6 @@ img {
 }
 .outgoing_msg {
   overflow: hidden;
-  margin: 26px 0 26px;
 }
 .sent_msg {
   float: right;
@@ -342,6 +387,16 @@ img {
   right: 0;
   top: 11px;
   width: 33px;
+  z-index: 2;
+}
+.attachment_btn{
+  position: absolute;
+  right: 40px;
+  top: 11px;
+  width: 33px;
+  padding: 0;
+  margin: 0;
+  color: red;
 }
 .messaging {
   padding: 0 0 50px 0;

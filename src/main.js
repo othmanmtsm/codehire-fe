@@ -11,6 +11,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import './assets/sass/style.scss'
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
+
 require('@/store/subscriber');
 
 axios.defaults.baseURL = `${process.env.VUE_APP_API_LINK}api`;

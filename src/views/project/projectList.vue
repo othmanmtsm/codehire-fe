@@ -10,15 +10,18 @@
                             label="Tous les categories"
                             solo
                             dense
+                            v-model="filter.category"
+                            item-text="name"
+                            item-value="id"
                         ></v-select>
                     </div>
                     <div class="fil-grp mt-2">
-                        <p class="sch-ttl">Keywords</p>
+                        <p class="sch-ttl">Project title</p>
                         <v-text-field
+                            v-model="filter.keyword"
                             solo
                             dense
-                            label="e.g Titre du projet"
-                            append-icon="add"
+                            append-icon="search"
                         ></v-text-field>
                     </div>
                     <div class="fil-grp mt-2">
@@ -26,12 +29,22 @@
                         <v-chip-group
                             column
                             active-class="primary--text"
+                            multiple
                         >
-                        <v-chip v-for="skill in skills" :key="skill.id">
-                            {{ skill.text }}
+                        <v-chip v-for="skill in skills" :key="skill.id" @click="addSkill(skill)">
+                            {{ skill.skill_name }}
                         </v-chip>
                         </v-chip-group>
                     </div>
+                    <v-divider></v-divider>
+                    <v-btn
+                        block
+                        color="primary"
+                        depressed
+                        @click="getFilteredData(filter)"
+                    >
+                        Apply filters
+                    </v-btn>
                 </div>
             </div>
             <div class="col-12 col-md-9">
@@ -56,7 +69,7 @@
                                         <label><v-icon small>schedule</v-icon> {{p.date}}</label>
                                     </v-card-subtitle>
                                     <v-card-text>
-                                        {{p.description}}
+                                        
                                     </v-card-text>
                                     <v-card-text>
                                         <v-chip
@@ -94,14 +107,49 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            categories: ['UI/UX Design', 'Web dev'],
-            skills: [
-                {text: 'php', id:1}
-            ],
-            projects: null
+            categories: [],
+            skills: []
+            ,
+            projects: null,
+            filter:{
+                category: '',
+                keyword: '',
+                skills: []
+            }
+        }
+    },
+    methods: {
+        getFilteredData(filter){
+            axios.post('project/filter',filter)
+                    .then(res=>{
+                        this.projects = res.data;
+                        filter.category = '';
+                        filter.keyword = '';
+                        filter.skills = [];
+                    })
+                    .catch(err=>{
+                        console.log(err.response.data);
+                    })
+        },
+        addSkill(skill){
+            this.filter.skills.push(skill.id);  
         }
     },
     created () {
+        axios.get('skills')
+                .then(res=>{
+                    this.skills = res.data;
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
+        axios.get('categories')
+                .then(res=>{
+                    this.categories = res.data;
+                })
+                .catch(err=>{
+                    console.log(err.response.data);
+                })
         axios.get('project')
                 .then(res=>{
                     this.projects = res.data;

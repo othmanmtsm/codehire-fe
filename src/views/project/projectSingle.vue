@@ -146,7 +146,12 @@
                             <v-list-item two-line>
                                 <v-list-item-content>
                                     <v-list-item-subtitle>Fixez votre tarif minimal</v-list-item-subtitle>
-                                    <v-list-item-title>{{ `${bid.amount} DH` }}</v-list-item-title>
+                                    <v-list-item-title>
+                                        <v-text-field
+                                        type="number"
+                                         v-model="bid.amount"
+                                        ></v-text-field>
+                                    </v-list-item-title>
                                     <v-slider
                                         v-model="bid.amount"
                                         class="align-center"
@@ -193,7 +198,19 @@
                         </v-card-actions>
                     </v-card>
                     <v-divider></v-divider>
-                    
+                    <v-dialog v-model="bidModel" width="500">
+                    <v-card>
+                        <v-card-title class="headline grey lighten-2" primary-title>Project posted</v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text>
+                            Your bid is placed, wait for the client to reach you, you can manage your projects and see if a client wants to hire you in your projects settings
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                        <v-btn link :to="{name: 'myprojects'}">Continue to projects settings</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </v-dialog>
                 </div>
             </div>
         </div>
@@ -224,7 +241,8 @@ export default {
                 delay: [],
                 description: ""
             },
-            storage: `${process.env.VUE_APP_API_LINK}storage`
+            storage: `${process.env.VUE_APP_API_LINK}storage`,
+            bidModel: false
         }
     },
     created () {
@@ -250,8 +268,10 @@ export default {
             console.log(request);
             
             axios.post(`project/${this.$route.params.id}/bid`, request)
-                    .then(res=>console.log(res.data))
-                    .catch(err=>console.log(err));
+                    .then(()=>{
+                        this.bidModel = true;
+                    })
+                    .catch(err=>console.log(err.response.data));
         }
     },
 }

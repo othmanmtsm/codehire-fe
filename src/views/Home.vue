@@ -1,25 +1,31 @@
 <template>
-    <div>
-        HOME
-        <v-btn
-            @click="testnode"
-        >
-            test node
-        </v-btn>
+    <div class="container">
+        <div v-if="user.roles[0].label == 'freelancer'">
+            <FreelancerDashboard></FreelancerDashboard>
+        </div>
+        <div v-else>
+            <ClientDashboard></ClientDashboard>
+        </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { mapGetters } from 'vuex';
+import FreelancerDashboard from '@/components/freelancer/dashboard/FreelancerDashboard';
+import ClientDashboard from '@/components/client/dashboard/ClientDashboard';
+
     export default {
+        components: {
+            FreelancerDashboard,
+            ClientDashboard
+        },
+        computed: {
+            ...mapGetters({
+                user: 'auth/user'
+            })
+        },
         methods: {
-            testnode() {
-                axios.post('http://localhost:8080/test')
-                    .then(res=>{
-                        console.log(res);
-                        
-                    })
-            }
+            
         },
     }
 </script>

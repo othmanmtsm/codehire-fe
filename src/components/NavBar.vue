@@ -1,20 +1,24 @@
 <template>
     <div>
-        <v-app-bar short hide-on-scroll color="white">
+        <v-app-bar flat short hide-on-scroll color="white">
             <v-app-bar-nav-icon v-if="authenticated" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title>
+              <router-link
+                :to="{name: 'home'}"
+              >
                 <img src="@/assets/images/logo.png" alt="logo" width="40">
+              </router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <template v-if="authenticated">
-                <v-text-field
-                    solo
-                    hide-details
-                    append-icon="search"
-                    single-line
-                    label="Search..."
-                ></v-text-field>
                 <v-spacer></v-spacer>
+                <v-chip
+                  label
+                  color="primary"
+                  style="margin-right: 5px;"
+                >
+                  {{ user.roles[0].label }}
+                </v-chip>
                 <v-avatar size="40">
                     <img :src="avatar+'/'+user.avatar">
                 </v-avatar>
@@ -51,18 +55,65 @@
                 <v-icon>clear</v-icon>
             </v-btn>
             <v-list>
+              <v-list-item
+                color="primary"
+                :to="{ name: 'home' }"
+              >
+                <v-icon
+                  style="margin-right: 10px;"
+                >home</v-icon>
+                Home
+              </v-list-item>
+              <v-list-item
+                color="primary"
+                :to="{ name: 'profile.me' }"
+                v-if="user.roles[0].label=='freelancer'"
+              >
+                <v-icon
+                  style="margin-right: 10px;"
+                >account_circle</v-icon>
+                Profile
+              </v-list-item>
+              <v-list-item
+                color="primary"
+                :to="{ name: 'project.list' }"
+                v-if="user.roles[0].label=='freelancer'"
+              >
+              <v-icon
+                  style="margin-right: 10px;"
+              >
+                view_stream
+              </v-icon>
+                Projects
+              </v-list-item>
+              <v-list-item
+                color="primary"
+                :to="{ name: 'freelancer.list' }"
+                v-if="user.roles[0].label=='client'"
+              >
+                <v-icon style="margin-right: 10px;">group</v-icon>
+                Freelancers
+              </v-list-item>
+              <v-list-item
+                color="primary"
+                :to="{ name: 'messages' }"
+              >
+                <v-icon style="margin-right: 10px;">inbox</v-icon>
+                Messages
+              </v-list-item>
               <v-list-group
-                prepend-icon="account_circle"
+                prepend-icon="settings"
               >
                 <template v-slot:activator>
-                  <v-list-item-title>Parametres</v-list-item-title>
+                  <v-list-item-title>Settings</v-list-item-title>
                 </template>
                 <v-list-item
                   link
                   :to="{name: 'settings.projects'}"
+                  v-if="user.roles[0].label=='client'"
                 >
                     <v-list-item-content>
-                        <v-list-item-title>Projets</v-list-item-title>
+                        <v-list-item-title>Projects</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
               </v-list-group>
